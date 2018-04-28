@@ -5,3 +5,6 @@
 
 ## python / flask
 - [Grinberg, Miguel. (2018). The Flask Mega-Tutorial](https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)
+
+## misc
+https://stackoverflow.com/questions/23850115/trying-to-get-a-timestamp-inputed-upon-a-click-of-the-button

@@ -1,0 +1,52 @@
+{% extends "base-bootstrap.html" %}
+{% block content %}
+	<main id="main" role="main">
+
+		<section class="jumbotron text-center">
+			<div class="container">
+				<h1 class="jumbotron-heading">Album example</h1>
+				<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
+				<p>
+					<a href="#" id="pushing" class="btn btn-primary my-2">pushing</a>
+				</p>
+				<div id="logdata">
+					<h2 id="appendHere" class="jumbotron-heading">Log</h2>
+					<p class="lead text-muted">Something short</p>
+				</div>
+			</div>
+		</section>
+
+	</main>
+{% endblock %}
+{% block scripts %}
+	<!-- Inline Script -->
+	<script>
+		"use strict";
+
+		$(document).ready(function() {
+			$( "#pushing" ).on( "click", click0_handler);
+
+			var last_click;
+			function click0_handler(event) {
+				event.preventDefault(); // boilerplate, but why?
+				last_click = new Date();
+				console.log(last_click.toString()+ " -- click0_handler() -- should only appear once")
+				$("#logdata").append(last_click.toString() + "<br />");
+				$( "#pushing" ).on( "click", click_handler);
+				$( "#pushing" ).off( "click", click0_handler);
+			}
+
+			function click_handler(event) {
+				var this_click = new Date();
+				$("#logdata").append(this_click.toString() + " -- " +
+										(this_click - last_click)/1000 + " seconds<br />");
+				last_click = this_click;
+			}
+			//$("#pushing").on("click",function(event) {
+				//event.preventDefault();
+				//if (!last) { last = new Date(); }
+				//$("#logdata").append((new Date() - last) / 1000 + " seconds<br />");
+			//});
+		});
+	</script>
+{% endblock %}
