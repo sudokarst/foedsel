@@ -4,14 +4,14 @@
 
 		<section class="jumbotron text-center">
 			<div class="container">
-				<h1 class="jumbotron-heading">Album example</h1>
-				<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>
-				<p>
-					<a href="#" id="pushing" class="btn btn-primary my-2">pushing</a>
-				</p>
+				<h1 class="jumbotron-heading">Foedsel</h1>
+				<div id="ui_group" class="btn-group">
+						<button id="pushing" class="btn btn-primary">Pushing</button>
+						<button id="headOut" class="btn btn-info disabled">Head out</button>
+						<button id="babyOut" class="btn btn-info disabled">Baby out</button>
+				</div>
 				<div id="logdata">
 					<h2 id="appendHere" class="jumbotron-heading">Log</h2>
-					<p class="lead text-muted">Something short</p>
 				</div>
 			</div>
 		</section>
@@ -24,23 +24,59 @@
 		"use strict";
 
 		$(document).ready(function() {
-			$( "#pushing" ).on( "click", click0_handler);
+			$("#pushing").on("click", startPushing);
 
-			var last_click;
-			function click0_handler(event) {
+			var pushingDate;
+			function startPushing(event) {
 				event.preventDefault(); // boilerplate, but why?
-				last_click = new Date();
-				console.log(last_click.toString()+ " -- click0_handler() -- should only appear once")
-				$("#logdata").append(last_click.toString() + "<br />");
-				$( "#pushing" ).on( "click", click_handler);
-				$( "#pushing" ).off( "click", click0_handler);
+				$("#pushing").off("click", startPushing) // disable ASAP
+					.addClass("btn btn-info disabled")
+					.removeClass("btn-primary");
+
+				pushingDate = new Date();
+				var pushingString = pushingDate.toString();
+				console.log(pushingString+ " pushing_handler()");
+				$("#logdata").append("Pushing: " + pushingString + "<br />");
+
+				// prepare next button
+				$("#headOut").addClass("btn-primary")
+					.removeClass("btn-info disabled")
+					.on("click", headOut);
 			}
 
-			function click_handler(event) {
-				var this_click = new Date();
-				$("#logdata").append(this_click.toString() + " -- " +
-										(this_click - last_click)/1000 + " seconds<br />");
-				last_click = this_click;
+			var headOutDate;
+			function headOut(event) {
+				event.preventDefault(); // incantations
+				$("#headOut").off("click", headOut) // disable ASAP
+					.addClass("btn btn-info disabled")
+					.removeClass("btn-primary");
+
+				headOutDate = new Date();
+				var headOutString = headOutDate.toString();
+				console.log(headOutString + " headOut_handler()");
+				$("#logdata").append("Head out: " + headOutString + "<br />");
+
+				// TODO -- set up 30-second reminders
+
+				// prepare next button
+				$("#babyOut").addClass("btn-primary")
+					.removeClass("btn-info disabled")
+					.on("click", babyOut);
+			}
+
+			var babyOutDate;
+			function babyOut(event) {
+				event.preventDefault();
+				$("#babyOut").off("click", babyOut) // disable ASAP
+					.addClass("btn btn-info disabled")
+					.removeClass("btn-primary");
+
+				babyOutDate = new Date();
+				var babyOutString = babyOutDate.toString();
+				console.log(babyOutString + " babyOut_handler()");
+				$("#logdata").append("Baby out: " + babyOutString + "<br />");
+
+				// TODO -- set up 30-second reminders
 			}
 		});
 	</script>
