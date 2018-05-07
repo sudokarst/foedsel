@@ -13,6 +13,9 @@
 				<div id="logdata">
 					<h2 id="appendHere" class="jumbotron-heading">Log</h2>
 				</div>
+				<div id="reminders">
+					<h2 id="bogusid" class="jumbotron-heading">Reminders</h2>
+				</div>
 			</div>
 		</section>
 
@@ -20,64 +23,5 @@
 {% endblock %}
 {% block scripts %}
 	<!-- Inline Script -->
-	<script>
-		"use strict";
-
-		$(document).ready(function() {
-			$("#pushing").on("click", startPushing);
-
-			var pushingDate;
-			function startPushing(event) {
-				event.preventDefault(); // boilerplate, but why?
-				$("#pushing").off("click", startPushing) // disable ASAP
-					.addClass("btn btn-info disabled")
-					.removeClass("btn-primary");
-
-				pushingDate = new Date();
-				var pushingString = pushingDate.toString();
-				console.log(pushingString+ " pushing_handler()");
-				$("#logdata").append("Pushing: " + pushingString + "<br />");
-
-				// prepare next button
-				$("#headOut").addClass("btn-primary")
-					.removeClass("btn-info disabled")
-					.on("click", headOut);
-			}
-
-			var headOutDate;
-			function headOut(event) {
-				event.preventDefault(); // incantations
-				$("#headOut").off("click", headOut) // disable ASAP
-					.addClass("btn btn-info disabled")
-					.removeClass("btn-primary");
-
-				headOutDate = new Date();
-				var headOutString = headOutDate.toString();
-				console.log(headOutString + " headOut_handler()");
-				$("#logdata").append("Head out: " + headOutString + "<br />");
-
-				// TODO -- set up 30-second reminders
-
-				// prepare next button
-				$("#babyOut").addClass("btn-primary")
-					.removeClass("btn-info disabled")
-					.on("click", babyOut);
-			}
-
-			var babyOutDate;
-			function babyOut(event) {
-				event.preventDefault();
-				$("#babyOut").off("click", babyOut) // disable ASAP
-					.addClass("btn btn-info disabled")
-					.removeClass("btn-primary");
-
-				babyOutDate = new Date();
-				var babyOutString = babyOutDate.toString();
-				console.log(babyOutString + " babyOut_handler()");
-				$("#logdata").append("Baby out: " + babyOutString + "<br />");
-
-				// TODO -- set up 30-second reminders
-			}
-		});
-	</script>
+	<script src='/static/main.js')></script>
 {% endblock %}
