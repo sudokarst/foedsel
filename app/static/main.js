@@ -4,8 +4,6 @@ $(document).ready(function() {
     let headOutReminder;
 
     var audio = new Audio('/static/Connected.wav');
-    console.log(audio);
-    audio.play();
 
     $("#pushing").one("click", startPushing);
 
@@ -26,7 +24,7 @@ $(document).ready(function() {
             .one("click", headOut);
     }
 
-    const remindEvery = 3 * 1000; // seconds * milliseconds/second
+    const remindEvery = 5 * 1000; // seconds * milliseconds/second
     function headOut(event) {
         $("#headOut")
             .addClass("btn btn-info disabled")
@@ -38,7 +36,8 @@ $(document).ready(function() {
 
         // schedule reminders
         headOutReminder = setInterval(function() {
-            $("#reminders").append("headOut: check vitals, " + Date() + "<br />");
+            audio.play();
+            $("#reminders").append("H headOut: " + Date() + "<br />");
         }, remindEvery);
 
         // prepare next button
@@ -60,7 +59,8 @@ $(document).ready(function() {
 
         // schedule reminders
         let babyOutReminder = setInterval(function() {
-            $("#reminders").append("babyOut: check vitals," + Date() + "<br />");
+            audio.play();
+            $("#reminders").append("B babyOut: " + Date() + "<br />");
         }, remindEvery);
 
         setTimeout(() => {
