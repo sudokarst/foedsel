@@ -3,6 +3,10 @@
 $(document).ready(function() {
     let headOutReminder;
 
+    var audio = new Audio('/static/Connected.wav');
+    console.log(audio);
+    audio.play();
+
     $("#pushing").one("click", startPushing);
 
     function startPushing(event) {
