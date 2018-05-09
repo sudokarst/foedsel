@@ -1,66 +1,67 @@
 "use strict";
 
 $(document).ready(function() {
-    $("#pushing").on("click", startPushing);
+    let headOutReminder;
 
-    var pushingDate;
+    $("#pushing").one("click", startPushing);
+
     function startPushing(event) {
-        event.preventDefault(); // boilerplate, but why?
-        $("#pushing").off("click", startPushing) // disable ASAP
+        $("#pushing")
             .addClass("btn btn-info disabled")
             .removeClass("btn-primary");
 
-        pushingDate = new Date();
+        // log it
+        let pushingDate = new Date();
         console.log(pushingDate + " pushing_handler()");
         $("#logdata").append("Pushing: " + pushingDate + "<br />");
 
         // prepare next button
-        $("#headOut").addClass("btn-primary")
+        $("#headOut")
+            .addClass("btn-primary")
             .removeClass("btn-info disabled")
-            .on("click", headOut);
+            .one("click", headOut);
     }
 
-    var remindEvery = 2 * 1000; // seconds * milliseconds/second
-    var headOutDate;
-    var headOutReminder;
+    const remindEvery = 3 * 1000; // seconds * milliseconds/second
     function headOut(event) {
-        event.preventDefault(); // incantations
-        $("#headOut").off("click", headOut) // disable ASAP
+        $("#headOut")
             .addClass("btn btn-info disabled")
             .removeClass("btn-primary");
 
-        headOutDate = new Date();
+        let headOutDate = new Date();
         console.log(headOutDate + " headOut_handler()");
         $("#logdata").append("Head out: " + headOutDate + "<br />");
 
         // schedule reminders
         headOutReminder = setInterval(function() {
-            $("#reminders").append("headOut: check vitals," + Date() + "<br />");
+            $("#reminders").append("headOut: check vitals, " + Date() + "<br />");
         }, remindEvery);
 
         // prepare next button
-        $("#babyOut").addClass("btn-primary")
+        $("#babyOut")
+            .addClass("btn-primary")
             .removeClass("btn-info disabled")
-            .on("click", babyOut);
+            .one("click", babyOut);
     }
 
-    var babyOutDate;
-    var babyOutReminder;
     function babyOut(event) {
         clearInterval(headOutReminder);
-        event.preventDefault();
-        $("#babyOut").off("click", babyOut) // disable ASAP
+        $("#babyOut")
             .addClass("btn btn-info disabled")
             .removeClass("btn-primary");
 
-        babyOutDate = new Date();
+        let babyOutDate = new Date();
         console.log(babyOutDate + " babyOut_handler()");
         $("#logdata").append("Baby out: " + babyOutDate + "<br />");
 
         // schedule reminders
-        babyOutReminder = setInterval(function() {
+        let babyOutReminder = setInterval(function() {
             $("#reminders").append("babyOut: check vitals," + Date() + "<br />");
         }, remindEvery);
+
+        setTimeout(() => {
+            clearInterval(babyOutReminder);
+        }, 3.1*remindEvery);
 
     }
     console.log("done loading js")
