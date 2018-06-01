@@ -14,11 +14,19 @@ class Stopwatch {
         this.times = [ 0, 0, 0 ];
     }
     
-    start() {
+    _start() {
         if (!this.time) this.time = performance.now();
         if (!this.running) {
             this.running = true;
             requestAnimationFrame(this.step.bind(this));
+        }
+    }
+
+    start() {
+        if (!this.time) this.time = performance.now();
+        if (!this.running) {
+            this.running = true;
+            setTimeout(this.step.bind(this), 999);
         }
     }
     
@@ -47,15 +55,22 @@ class Stopwatch {
         clearChildren(this.results);
     }
     
-    step(timestamp) {
+    _step(timestamp) {
         if (!this.running) return;
         this.calculate(timestamp);
         this.time = timestamp;
         this.print();
         requestAnimationFrame(this.step.bind(this));
     }
+
+    step() {
+        var timeNow = performance.now()
+        if (!this.running) return;
+        deltaTime = timeNow - this.time
+        this
+    }
     
-    calculate(timestamp) {
+    _calculate(timestamp) {
         var diff = timestamp - this.time;
         // Hundredths of a second are 100 ms
         this.times[2] += diff / 10;
@@ -69,6 +84,10 @@ class Stopwatch {
             this.times[0] += 1;
             this.times[1] -= 60;
         }
+    }
+
+    calculate(hiResTimeStamp) {
+        var deltaTime = timestamp - this.time;
     }
     
     print() {
