@@ -11,19 +11,12 @@ class Stopwatch {
     }
     
     reset() {
-        this.times = [ 0, 0, 0 ];
+        this.times = [ 0, 0 ];
     }
     
-    _start() {
-        if (!this.time) this.time = performance.now();
-        if (!this.running) {
-            this.running = true;
-            requestAnimationFrame(this.step.bind(this));
-        }
-    }
-
     start() {
-        if (!this.time) this.time = performance.now();
+        if (!this.time0) this.time0 = performance.now();
+        console.log('start(): this.time0=',this.time0)
         if (!this.running) {
             this.running = true;
             setTimeout(this.step.bind(this), 999);
@@ -55,41 +48,27 @@ class Stopwatch {
         clearChildren(this.results);
     }
     
-    _step(timestamp) {
-        if (!this.running) return;
-        this.calculate(timestamp);
-        this.time = timestamp;
-        this.print();
-        requestAnimationFrame(this.step.bind(this));
-    }
-
     step() {
-        var timeNow = performance.now()
         if (!this.running) return;
-        deltaTime = timeNow - this.time
-        this
+        var timeNow = performance.now();
+        console.log('step(): timeNow=',timeNow);
+        var msElapsed = timeNow - this.time0;
+        console.log('step(): msElapsed=',msElapsed);
+        this.calculate(timeNow);
+        this.print();
+        var secElapsed = Math.round(msElapsed/1000);
+        var nextTime = this.time0 + 1000 * (secElapsed + 1);
+        var timeoutToNext = nextTime - timeNow;
+        console.log('step(): timeoutToNext=',timeoutToNext);
+        setTimeout(this.step.bind(this), timeoutToNext);
     }
     
-    _calculate(timestamp) {
-        var diff = timestamp - this.time;
-        // Hundredths of a second are 100 ms
-        this.times[2] += diff / 10;
-        // Seconds are 100 hundredths of a second
-        if (this.times[2] >= 100) {
-            this.times[1] += 1;
-            this.times[2] -= 100;
-        }
-        // Minutes are 60 seconds
-        if (this.times[1] >= 60) {
-            this.times[0] += 1;
-            this.times[1] -= 60;
-        }
+    calculate(timestamp) {
+        var timeElapsed = Math.round((timestamp - this.time0)/1000);
+        this.times[0] = Math.trunc(timeElapsed/60)
+        this.times[1] = timeElapsed % 60
     }
 
-    calculate(hiResTimeStamp) {
-        var deltaTime = timestamp - this.time;
-    }
-    
     print() {
         this.display.innerText = this.format(this.times);
     }
@@ -97,8 +76,7 @@ class Stopwatch {
     format(times) {
         return `\
 ${pad0(times[0], 2)}:\
-${pad0(times[1], 2)}:\
-${pad0(Math.floor(times[2]), 2)}`;
+${pad0(times[1], 2)}`;
     }
 }
 
@@ -120,7 +98,7 @@ $(document).ready(function() {
 
     let headOutReminder;
 
-    var audio = new Audio('../static/Connected.wav');
+    var audio = new Audio('./audio/Connected.wav');
     if (!audio) { console.log('no audio'); }
 
     $("#pushing").one("click", startPushing);
